@@ -16,12 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from gateway.views import PostsAPIProxyView
+from gateway.views import PostsAPIProxyView, PostsListView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     url(r'api/1.0/posts/', PostsAPIProxyView.as_view(), name="posts_api"),
 
-    #url(r'^$', PostsListView.as_view(), name="posts_list")
+    url(r'^$', PostsListView.as_view(), name="posts_list")
 ]

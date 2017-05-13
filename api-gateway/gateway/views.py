@@ -2,6 +2,8 @@
 
 import requests
 from django.conf import settings
+from django.http import HttpResponse
+from django.views import View
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_proxy.views import ProxyView
@@ -28,3 +30,16 @@ class PostsAPIProxyView(ProxyView):
         response = requests.post(url, data, files=files)
 
         return Response(response.json(), response.status_code)
+
+
+class PostsListView(View):
+    """
+    Actúa como un proxy del microservicio de web para renderizar el HTML del listado de posts
+    """
+
+    def get(self, request):
+        url = settings.MICROSERVICES.get("WebMicroservice")
+        response = requests.get(url)
+
+        # TODO: controlar si se produce algún tipo de error en la comunicación HTTP con el microservicio de Web
+        return HttpResponse(response.text, status=response.status_code)
